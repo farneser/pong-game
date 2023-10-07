@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="menu">
+        <h1 id="menu__title">Pong game</h1>
+        <button id="playWithFriendButton" class="menu__button menu__button--friend">Play with friend</button>
+        <button id="playWithBotButton" class="menu__button menu__button--bot">Play with bot</button>
+    </div>
+
+    <div id="game" style="display: none;">
+        <canvas id="canvas" class="game__canvas"></canvas>
+        <button id="backToMenuButton" class="game__button game__button--menu">Go back</button>
+    </div>
+
+    <div class="popup popup--game-over" style="display: none;" id="gameOverPopup">
+        <table class="popup__table">
+            <tr>
+                <td colspan="2" class="popup__text" id="gameOverText"></td>
+            </tr>
+            <tr>
+                <td class="popup__player-label">First player</td>
+                <td class="popup__player-label">Second player</td>
+            </tr>
+            <tr>
+                <td class="popup__player-score" id="player1Score"></td>
+                <td class="popup__player-score" id="player2Score"></td>
+            </tr>
+        </table>
+        <button id="restartButton" class="popup__button popup__button--restart">Play a new game</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
