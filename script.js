@@ -36,6 +36,10 @@ function getRandomAngle() {
 }
 
 function getRandomSpeed() {
+    // if (Math.random() > 0.5) {
+    //     return (5 + Math.random() * 3) * 2;
+    // }
+
     return 5 + Math.random() * 3;
 }
 
@@ -156,37 +160,37 @@ function update() {
 
     const speed = getRandomSpeed();
 
+    // Обработка столкновения с игроками
     if (
-        gameSettings.ballX - gameSettings.ballRadius <
-        gameSettings.player1X + gameSettings.playerSize.height &&
+        gameSettings.ballX - gameSettings.ballRadius < gameSettings.player1X + gameSettings.playerSize.height &&
         gameSettings.ballY + gameSettings.ballRadius > gameSettings.player1Y &&
-        gameSettings.ballY - gameSettings.ballRadius <
-        gameSettings.player1Y + gameSettings.playerSize.width
+        gameSettings.ballY - gameSettings.ballRadius < gameSettings.player1Y + gameSettings.playerSize.width
     ) {
-        const relativeIntersectY =
-            gameSettings.ballY - (gameSettings.player1Y + 50);
-        const normalizedRelativeIntersectionY = relativeIntersectY / 50; // Нормализуем в диапазоне [-1, 1]
+        // Рассчитываем угол отскока мяча от ракетки игрока 1
+        const deltaY = gameSettings.ballY - (gameSettings.player1Y + gameSettings.playerSize.width / 2);
+        const normalizedDeltaY = deltaY / (gameSettings.playerSize.width / 2); // Нормализуем в диапазоне [-1, 1]
+        const bounceAngle = normalizedDeltaY * (Math.PI / 4); // Максимальный угол отскока
 
-        const bounceAngle = normalizedRelativeIntersectionY * (Math.PI / 4);
-
-        gameSettings.ballSpeedX = Math.abs(gameSettings.ballSpeedX);
-        gameSettings.ballSpeedY = Math.sin(bounceAngle) * speed;
+        // Меняем направление мяча и скорость на основе угла отскока
+        gameSettings.ballSpeedX = Math.abs(gameSettings.ballSpeedX); // Положительная горизонтальная скорость
+        gameSettings.ballSpeedY = Math.sin(bounceAngle) * speed; // Вертикальная скорость на основе угла
     }
+
     if (
         gameSettings.ballX + gameSettings.ballRadius > gameSettings.player2X &&
         gameSettings.ballY + gameSettings.ballRadius > gameSettings.player2Y &&
-        gameSettings.ballY - gameSettings.ballRadius <
-        gameSettings.player2Y + gameSettings.playerSize.width
+        gameSettings.ballY - gameSettings.ballRadius < gameSettings.player2Y + gameSettings.playerSize.width
     ) {
-        const relativeIntersectY =
-            gameSettings.ballY - (gameSettings.player2Y + 50);
-        const normalizedRelativeIntersectionY = relativeIntersectY / 50;
+        // Рассчитываем угол отскока мяча от ракетки игрока 2
+        const deltaY = gameSettings.ballY - (gameSettings.player2Y + gameSettings.playerSize.width / 2);
+        const normalizedDeltaY = deltaY / (gameSettings.playerSize.width / 2);
+        const bounceAngle = normalizedDeltaY * (Math.PI / 4);
 
-        const bounceAngle = normalizedRelativeIntersectionY * (Math.PI / 4);
-
-        gameSettings.ballSpeedX = -Math.abs(gameSettings.ballSpeedX);
+        // Меняем направление мяча и скорость на основе угла отскока
+        gameSettings.ballSpeedX = -Math.abs(gameSettings.ballSpeedX); // Отрицательная горизонтальная скорость
         gameSettings.ballSpeedY = Math.sin(bounceAngle) * speed;
     }
+
 
     if (gameSettings.ballX - gameSettings.ballRadius < 0) {
         gameSettings.player2Score++;
@@ -242,7 +246,7 @@ function draw() {
         gameSettings.playerSize.height,
         gameSettings.playerSize.width
     );
-
+    // console.log(performance.now())
     ctx.font = "24px Arial";
     ctx.fillStyle = "black";
     ctx.fillText("First player: " + gameSettings.player1Score, 20, 40);
@@ -257,7 +261,12 @@ function gameLoop() {
     update();
     draw();
     if (gameSettings.gameActive) {
-        requestAnimationFrame(gameLoop);
+        const fps = 144;
+
+        setTimeout(function () {
+            requestAnimationFrame(gameLoop);
+
+        }, 1000 / fps);
     }
 }
 
