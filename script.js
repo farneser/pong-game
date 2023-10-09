@@ -96,10 +96,19 @@ const backToMenuButton = document.getElementById("backToMenuButton");
 document.addEventListener("keydown", (event) => {
     if (!gameSettings.gameActive) return;
 
-    if (event.key === "w") {
+    if (event.key.toLowerCase() === "w") {
         gameSettings.player1SpeedY = -gameSettings.playersSpeed;
-    } else if (event.key === "s") {
+    } else if (event.key.toLowerCase() === "s") {
         gameSettings.player1SpeedY = gameSettings.playersSpeed;
+    }
+
+    if (event.key.toLowerCase() === "m") {
+        gameSettings.isBotMode = !gameSettings.isBotMode;
+        if (gameSettings.isBotMode) {
+            player2Instructions.style.display = "none";
+        } else {
+            player2Instructions.style.display = "block";
+        }
     }
 
     if (gameSettings.isBotMode) {
